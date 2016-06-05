@@ -34,15 +34,20 @@ def create_timelapse(lat, lon, start_date, end_date, clouds, cloudscore):
     delta = timedelta(days=16)
     while end_date > cur_date:
         response = call_api(lat, lon, cur_date.strftime("%Y-%m-%d"))
+        while response is None:
+            print("Api Call Fail: Waiting 15 seconds before retry...")
+            time.sleep(15)
+            response = call_api(lat, lon, cur_date.strftime("%Y-%m-%d"))
         print("Api Call")
-        print(response)
         if not clouds:
             if response is None or "cloud_score" not in response or response["cloud_score"] is None or response["cloud_score"] > cloudscore:
                  print("Request does not match threshold")
             else:
                 get_image(response["url"], cur_date.strftime("%Y-%m-%d"))
+                print("Got Image")
         else:
             get_image(response["url"], cur_date.strftime("%Y-%m-%d"))
+            print("Got Image")
 
         cur_date = cur_date + delta
     call(["convert", "-delay", "50", "-loop", "0", "./data/*.png", "output.gif"])
