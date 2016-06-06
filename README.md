@@ -14,7 +14,7 @@ Then run the installation script to download dependencies:
 
 # Running
 To make a simple timelapse:
-`python earth-timelapse.py --latitude 38.897 --longitude -77.037`
+`python earth-timelapse.py --latitude 38.897 --longitude 77.037`
 
 By default, all images are taken from the beginning of 2015 to the current day, and images that recieve a NASA cloud_score of over 0.1 are ommitted.
 
